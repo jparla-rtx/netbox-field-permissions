@@ -1,21 +1,10 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db.models import Q
 from utilities.fields import CounterCacheField, NaturalOrderingField
+from netbox.registry import registry
 
 # Limit choices to common NetBox apps. Change this in the future if we want to support other plugin models too.
-# FIXME: Source from netbox.registry.Registry (check migration compatibility)
-FIELDPERMISSION_OBJECT_TYPES = Q(
-    app_label__in=[
-        "circuits",
-        "extras",
-        "ipam",
-        "tenancy",
-        "wireless",
-        "dcim",
-        "virtualization",
-        "vpn",
-    ]
-)
+FIELDPERMISSION_OBJECT_TYPES = Q(app_label__in=registry['models'].keys())
 
 # Ignore these field types as they're not used by the end-user directly (GUI/API)
 FIELDPERMISSION_IGNORE_FIELD_TYPES = (
